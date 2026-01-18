@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国AI政策观察 - 深度洞察与趋势分析</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ===================== 变量定义 (与China.html完全一致) ===================== */
+        :root {
+            --primary-color: #0f4c81; /* 经典蓝 */
+            --primary-dark: #0a355c;
+            --accent-color: #00b4d8; /* 科技亮蓝 */
+            --accent-gradient: linear-gradient(135deg, #0f4c81 0%, #00b4d8 100%);
+            --text-main: #2c3e50;
+            --text-light: #5f7588;
+            --bg-body: #f4f7f9;
+            --bg-card: #ffffff;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===================== 全局重置 ===================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Noto Sans SC', "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* 通用动画类 */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===================== 导航栏 ===================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-sm);
+            padding: 10px 0;
+        }
+
+        .navbar-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .logo img { height: 40px; margin-right: 10px; }
+        .logo span { font-family: 'Noto Serif SC', serif; }
+
+        .navbar.scrolled .logo { color: var(--primary-color); }
+        .navbar.scrolled .nav-links a { color: var(--text-main); }
+        .navbar.scrolled .nav-links a:hover, .navbar.scrolled .nav-links a.active { color: var(--primary-color); }
+        .navbar.scrolled .audio-control i { color: var(--text-main); }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a {
+            color: white;
+            font-weight: 500;
+            font-size: 16px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        /* 移动端菜单按钮 */
+        .hamburger {
+            display: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .navbar.scrolled .hamburger { color: var(--text-main); }
+
+        /* ===================== Hero 区域 ===================== */
+        .china-hero {
+            position: relative;
+            height: 70vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at 10% 20%, rgb(15, 76, 129) 0%, rgb(0, 30, 60) 90%);
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        /* 动态背景动画 */
+        .hero-bg-anim {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(0, 180, 216, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
+            animation: rotateBg 30s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes rotateBg { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .china-hero-overlay {
+            position: relative;
+            z-index: 2;
+            padding: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 90%;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .china-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(32px, 5vw, 56px);
+            color: white;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .china-subtitle {
+            font-size: clamp(16px, 3vw, 24px);
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .china-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ===================== 通用 Section ===================== */
+        .section-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gradient);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ===================== 图表部分 ===================== */
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .bar-chart {
+            height: 450px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 0 20px 40px 60px;
+            position: relative;
+            border-bottom: 1px solid #e2e8f0;
+            margin-top: 40px;
+        }
+
+        /* Y轴 */
+        .chart-y-axis {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 40px;
+            width: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        /* 网格线 */
+        .chart-grid {
+            position: absolute;
+            left: 60px;
+            right: 0;
+            top: 0;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .grid-line {
+            width: 100%;
+            height: 1px;
+            background: #f1f5f9;
+        }
+
+        /* 柱子 */
+        .bar-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 10;
+        }
+
+        .bar {
+            width: 30%;
+            min-width: 16px;
+            max-width: 40px;
+            background: var(--accent-gradient);
+            border-radius: 6px 6px 0 0;
+            transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(15, 76, 129, 0.2);
+        }
+
+        .bar:hover {
+            transform: scaleY(1.05);
+            background: linear-gradient(135deg, #0f4c81 0%, #2196f3 100%);
+            box-shadow: 0 8px 20px rgba(15, 76, 129, 0.4);
+        }
+
+        .bar-label {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        /* Tooltip */
+        .bar-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #1e293b;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            width: 220px;
+            font-size: 13px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 100;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .bar-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+
+        .bar:hover + .bar-label + .bar-tooltip,
+        .bar:focus + .bar-label + .bar-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .bar-tooltip h4 { color: var(--accent-color); margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px;}
+        .bar-tooltip p { line-height: 1.4; color: #cbd5e1; margin-bottom: 2px;}
+
+        /* 高度类 */
+        .h-0 { height: 1%; background: #e2e8f0; }
+        .h-20 { height: 20%; }
+        .h-40 { height: 40%; }
+        .h-60 { height: 60%; }
+        .h-80 { height: 80%; }
+        .h-100 { height: 100%; }
+
+        .chart-summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: #eef7ff;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 0 8px 8px 0;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        /* ===================== 政策筛选列表 ===================== */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: var(--text-light);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(15, 76, 129, 0.3);
+        }
+
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .policy-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .policy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: #e2e8f0;
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #f8fafc, #ffffff);
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .policy-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1.4;
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .policy-badge {
+            background: rgba(15, 76, 129, 0.1);
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-row {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .info-row i { width: 20px; color: var(--accent-color); text-align: center; margin-right: 8px;}
+
+        .policy-desc {
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--text-main);
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            flex: 1;
+        }
+
+        .card-footer {
+            padding: 20px;
+            border-top: 1px solid #f1f5f9;
+            text-align: right;
+        }
+
+        .btn-link {
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-link:hover { color: var(--accent-color); gap: 8px; }
+
+        /* ===================== 时间轴 ===================== */
+        .timeline-wrapper {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 4px solid var(--primary-color);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 0 0 4px rgba(15, 76, 129, 0.1);
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background: var(--accent-color);
+            transform: translateX(-50%) scale(1.2);
+            box-shadow: 0 0 0 6px rgba(0, 180, 216, 0.2);
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 25px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #f1f5f9;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-item:nth-child(odd) { flex-direction: row; }
+        .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+
+        /* Arrows */
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -10px;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -10px;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+        }
+
+        .timeline-item:hover .timeline-content {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .timeline-year {
+            font-size: 28px;
+            font-weight: 800;
+            color: rgba(15, 76, 129, 0.1);
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            line-height: 1;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-text { font-size: 14px; color: var(--text-light); position: relative; z-index: 1; }
+
+        /* ===================== 页脚 ===================== */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer-links a { color: #94a3b8; margin: 0 10px; }
+        .footer-links a:hover { color: white; text-decoration: underline; }
+        .copyright { margin-bottom: 15px; opacity: 0.8; }
+
+        /* ===================== 响应式 ===================== */
+        @media (max-width: 768px) {
+            .navbar { background: white; padding: 15px 0; }
+            .navbar .logo { color: var(--primary-color); }
+            .nav-main { display: none; }
+            .hamburger { display: block; color: var(--text-main); }
+            
+            .sidebar {
+                position: fixed;
+                top: 0; right: 0; width: 80%; height: 100vh;
+                background: white;
+                z-index: 1200;
+                transform: translateX(100%);
+                transition: 0.3s;
+                padding: 80px 30px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+            .sidebar.active { transform: translateX(0); }
+            .sidebar a { display: block; font-size: 18px; padding: 15px 0; border-bottom: 1px solid #f1f1f1; color: var(--text-main); }
+            .sidebar-overlay {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); z-index: 1100; display: none;
+            }
+            .sidebar-overlay.active { display: block; }
+            .sidebar-close { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; }
+
+            .china-hero { height: auto; padding: 120px 20px 60px; }
+            .china-title { font-size: 32px; }
+            
+            .bar-chart { padding-left: 40px; }
+            .bar-label { font-size: 10px; transform: rotate(-45deg); margin-top: 10px; }
+            
+            .timeline-line { left: 20px; }
+            .timeline-dot { left: 20px; }
+            .timeline-item { flex-direction: column !important; align-items: flex-start; margin-left: 40px; margin-bottom: 40px; }
+            .timeline-content { width: 100%; }
+            .timeline-content::before {
+                left: -10px !important;
+                right: auto !important;
+                border-width: 10px 10px 10px 0 !important;
+                border-color: transparent white transparent transparent !important;
+            }
+            
+            .policy-grid { grid-template-columns: 1fr; }
+        }
+        
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo">
+                <img src="image/homepage/logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block'">
+                <i class="fas fa-globe-americas" style="margin-right:10px; font-size: 24px; color:var(--primary-color)"></i>
+                <span>法规观察</span>
+            </a>
+
+            <div class="nav-main">
+                <nav class="nav-links">
+                    <a href="index.html">首页</a>
+                    <a href="china.html">中国概况</a>
+                    <a href="russia.html">俄罗斯概况</a>
+                    <a href="#chart-section" class="active">政策趋势</a>
+                    <a href="#policy-list">政策详情</a>
+                    <a href="#timeline">发展脉络</a>
+                </nav>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:20px;">
+                <div class="audio-control" role="button" aria-label="背景音乐" tabindex="0">
+                    <i class="fa-regular fa-bell" id="audioBtn" style="cursor: pointer; font-size: 18px; color: white;"></i>
+                    <audio id="bgAudio" src="music/bg.mp3" loop preload="auto"></audio>
+                </div>
+                <button class="hamburger" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <button class="sidebar-close" id="sidebarClose"><i class="fa-solid fa-xmark"></i></button>
+        <nav>
+            <a href="index.html">首页</a>
+            <a href="china.html">中国概况</a>
+            <a href="russia.html">俄罗斯概况</a>
+            <a href="#chart-section">政策趋势</a>
+            <a href="#policy-list">政策详情</a>
+            <a href="#timeline">发展脉络</a>
+        </nav>
+    </aside>
+
+    <section class="china-hero">
+        <div class="hero-bg-anim"></div>
+        <div class="china-hero-overlay">
+            <h1 class="china-title">美国人工智能政策观察</h1>
+            <h2 class="china-subtitle">AI Policy Observation</h2>
+            <p class="china-description">深度追踪美国AI政策演进脉络，精准把握监管趋势与产业导向，为您提供权威的政策数据与分析。</p>
+        </div>
+    </section>
+
+    <main>
+        <section id="chart-section" class="section-container fade-in-up">
+            <div class="section-header">
+                <h2 class="section-title">政策发布趋势 (2016-2025)</h2>
+                <p style="color:var(--text-light)">近十年政策发布数量统计与关键节点分析</p>
+            </div>
+            
+            <div class="chart-card">
+                <div class="bar-chart">
+                    <div class="chart-grid">
+                        <div class="grid-line"></div><div class="grid-line"></div><div class="grid-line"></div><div class="grid-line"></div><div class="grid-line"></div><div class="grid-line"></div>
+                    </div>
+                    <div class="chart-y-axis">
+                        <span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><span>0</span>
+                    </div>
+                    
+                    <div class="bar-wrapper">
+                        <div class="bar h-0" tabindex="0"></div>
+                        <div class="bar-label">2016</div>
+                        <div class="bar-tooltip">
+                            <h4>2016年 (0项)</h4>
+                            <p>本年度无重大联邦层面AI政策发布</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-20" tabindex="0"></div>
+                        <div class="bar-label">2017</div>
+                        <div class="bar-tooltip">
+                            <h4>2017年 (1项)</h4>
+                            <p>《美国人工智能倡议》行政令草案</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-0" tabindex="0"></div>
+                        <div class="bar-label">2018</div>
+                        <div class="bar-tooltip">
+                            <h4>2018年 (0项)</h4>
+                            <p>本年度无重大新政发布</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-60" tabindex="0"></div>
+                        <div class="bar-label">2019</div>
+                        <div class="bar-tooltip">
+                            <h4>2019年 (3项)</h4>
+                            <p>《美国人工智能倡议》正式签署</p>
+                            <p>《人工智能应用监管指南》草案</p>
+                            <p>国防部AI伦理原则</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-40" tabindex="0"></div>
+                        <div class="bar-label">2020</div>
+                        <div class="bar-tooltip">
+                            <h4>2020年 (2项)</h4>
+                            <p>《人工智能应用监管指南》发布</p>
+                            <p>《AI研究资源工作组法案》</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-100" tabindex="0"></div>
+                        <div class="bar-label">2021</div>
+                        <div class="bar-tooltip">
+                            <h4>2021年 (6项)</h4>
+                            <p>《AI法案》草案</p>
+                            <p>《国家AI研究资源战略》</p>
+                            <p>《AI风险管理框架》1.0</p>
+                            <p>《算法问责法案》提案</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-80" tabindex="0"></div>
+                        <div class="bar-label">2022</div>
+                        <div class="bar-tooltip">
+                            <h4>2022年 (4项)</h4>
+                            <p>《AI权利法案蓝图》</p>
+                            <p>《AI风险管理框架》1.1</p>
+                            <p>《2022年CHIPS法案》含AI条款</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-100" tabindex="0"></div>
+                        <div class="bar-label">2023</div>
+                        <div class="bar-tooltip">
+                            <h4>2023年 (6项)</h4>
+                            <p>《AI行政令：安全、可靠、可信的AI》</p>
+                            <p>《AI风险管理框架》2.0</p>
+                            <p>《生成式AI监管指南》草案</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-80" tabindex="0"></div>
+                        <div class="bar-label">2024</div>
+                        <div class="bar-tooltip">
+                            <h4>2024年 (4项)</h4>
+                            <p>《AI安全研究所框架》</p>
+                            <p>《AI采购指南》</p>
+                            <p>《联邦机构AI治理要求》</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar h-60" tabindex="0"></div>
+                        <div class="bar-label">2025</div>
+                        <div class="bar-tooltip">
+                            <h4>2025年 (3项)</h4>
+                            <p>《AI问责法案》实施条例</p>
+                            <p>《跨境AI数据流动协议》</p>
+                            <p>《AI国家安全备忘录》</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-summary">
+                    <i class="fas fa-chart-line" style="margin-right:8px;"></i>
+                    <strong>数据洞察：</strong> 2016-2025年间美国共发布AI相关政策29项。2021年和2023年为监管高峰年，分别发布6项政策，体现了美国在AI风险管理、伦理框架和国家安全方面的全面布局。
+                </div>
+            </div>
+        </section>
+
+        <section id="policy-list" class="section-container fade-in-up">
+            <div class="section-header">
+                <h2 class="section-title">政策法规详情库</h2>
+            </div>
+
+            <div class="filter-container">
+                <button class="filter-btn active" data-year="all">全部</button>
+                <button class="filter-btn" data-year="2025">2025</button>
+                <button class="filter-btn" data-year="2024">2024</button>
+                <button class="filter-btn" data-year="2023">2023</button>
+                <button class="filter-btn" data-year="2022">2022</button>
+                <button class="filter-btn" data-year="2021">2021</button>
+                <button class="filter-btn" data-year="2020">2020</button>
+                <button class="filter-btn" data-year="2019">2019</button>
+                <button class="filter-btn" data-year="2017">2017</button>
+            </div>
+
+            <div class="policy-grid" id="policyGrid">
+                
+                <article class="policy-card" data-year="2025">
+                    <div class="card-header">
+                        <h3 class="policy-title">《AI问责法案》实施条例</h3>
+                        <span class="policy-badge">2025</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-university"></i> <strong>单位：</strong>商务部、联邦贸易委员会</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>施行：</strong>2025年3月15日</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>要求高风险AI系统进行强制性影响评估、第三方审计和持续监控，建立追责机制。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.federalregister.gov/documents/2025/03/15/2025-05555/ai-accountability-act-implementation" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2025">
+                    <div class="card-header">
+                        <h3 class="policy-title">《跨境AI数据流动协议》</h3>
+                        <span class="policy-badge">2025</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-globe"></i> <strong>单位：</strong>国务院、商务部</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>签署：</strong>2025年6月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>与欧盟、英国等盟友建立AI训练数据跨境流动框架，平衡隐私保护与创新需求。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.state.gov/cross-border-ai-data-flow-framework/" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2025">
+                    <div class="card-header">
+                        <h3 class="policy-title">《AI国家安全备忘录》</h3>
+                        <span class="policy-badge">2025</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-shield-alt"></i> <strong>单位：</strong>白宫国家安全委员会</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>发布：</strong>2025年9月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>明确AI在国防、情报、网络安全领域的应用准则，建立AI武器系统治理框架。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.whitehouse.gov/briefing-room/presidential-actions/2025/09/10/memorandum-on-ai-and-national-security/" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2024">
+                    <div class="card-header">
+                        <h3 class="policy-title">《AI安全研究所框架》</h3>
+                        <span class="policy-badge">2024</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-flask"></i> <strong>单位：</strong>国家标准与技术研究院（NIST）</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>发布：</strong>2024年4月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>设立AI安全研究所，制定前沿模型安全评估标准，推动红队测试和对抗性评估。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.nist.gov/ai-safety-institute" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2024">
+                    <div class="card-header">
+                        <h3 class="policy-title">《联邦机构AI治理要求》</h3>
+                        <span class="policy-badge">2024</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-landmark"></i> <strong>单位：</strong>行政管理和预算局（OMB）</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>生效：</strong>2024年12月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>要求联邦机构设立首席AI官，制定AI使用清单，对高风险应用进行影响评估。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.whitehouse.gov/omb/ai-governance/" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2023">
+                    <div class="card-header">
+                        <h3 class="policy-title">《AI行政令：安全、可靠、可信的AI》</h3>
+                        <span class="policy-badge">2023</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-presidential"></i> <strong>单位：</strong>白宫</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>签署：</strong>2023年10月30日</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>美国最全面的AI行政令，要求开发前沿AI模型的公司向政府报告安全测试结果，制定内容溯源标准等。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2023">
+                    <div class="card-header">
+                        <h3 class="policy-title">《AI风险管理框架》2.0</h3>
+                        <span class="policy-badge">2023</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-shield-alt"></i> <strong>单位：</strong>NIST</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>发布：</strong>2023年1月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>更新风险管理框架，增加生成式AI专项指南，强调可解释性、公平性和问责制。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.nist.gov/ai-rmf" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2022">
+                    <div class="card-header">
+                        <h3 class="policy-title">《AI权利法案蓝图》</h3>
+                        <span class="policy-badge">2022</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-gavel"></i> <strong>单位：</strong>白宫科技政策办公室</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>发布：</strong>2022年10月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>提出五项原则：安全有效的系统、算法歧视防护、数据隐私、透明度、人工替代选择。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.whitehouse.gov/ostp/ai-bill-of-rights/" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2021">
+                    <div class="card-header">
+                        <h3 class="policy-title">《国家AI研究资源战略》</h3>
+                        <span class="policy-badge">2021</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-network-wired"></i> <strong>单位：</strong>国家科学基金会</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>发布：</strong>2021年12月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>建立国家级AI研究基础设施，向学术界和中小企业提供计算资源、数据集和工具。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.nitrd.gov/national-ai-research-resource-task-force/" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2020">
+                    <div class="card-header">
+                        <h3 class="policy-title">《人工智能应用监管指南》</h3>
+                        <span class="policy-badge">2020</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-book"></i> <strong>单位：</strong>白宫科技政策办公室</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>发布：</strong>2020年1月</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>为联邦机构提供AI监管原则，强调基于风险的方法，避免过度监管抑制创新。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.whitehouse.gov/wp-content/uploads/2020/01/Draft-OMB-Memo-on-Regulation-of-AI.pdf" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="policy-card" data-year="2019">
+                    <div class="card-header">
+                        <h3 class="policy-title">《美国人工智能倡议》行政令</h3>
+                        <span class="policy-badge">2019</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row"><i class="fas fa-presidential"></i> <strong>单位：</strong>白宫</div>
+                        <div class="info-row"><i class="far fa-calendar-alt"></i> <strong>签署：</strong>2019年2月11日</div>
+                        <div class="policy-desc">
+                            <strong>核心：</strong>启动美国国家AI战略，聚焦研发投资、资源开放、标准制定、劳动力培训和国际合作五大支柱。
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.whitehouse.gov/presidential-actions/executive-order-maintaining-american-leadership-artificial-intelligence/" target="_blank" class="btn-link">查看原文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section id="timeline" class="section-container fade-in-up">
+            <div class="section-header">
+                <h2 class="section-title">监管演进脉络</h2>
+            </div>
+            
+            <div class="timeline-wrapper">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2019</div>
+                        <h3 class="timeline-title">国家战略启动</h3>
+                        <p class="timeline-text">《美国人工智能倡议》行政令签署，标志着美国国家AI战略正式启动，确立研发投资、标准制定等五大支柱。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2020</div>
+                        <h3 class="timeline-title">监管原则确立</h3>
+                        <p class="timeline-text">发布《人工智能应用监管指南》，提出基于风险的监管原则，平衡创新促进与风险防范。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2021</div>
+                        <h3 class="timeline-title">风险管理框架化</h3>
+                        <p class="timeline-text">NIST发布《AI风险管理框架》1.0，提供系统性风险管理方法，并启动国家AI研究资源建设。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2022</div>
+                        <h3 class="timeline-title">权利与价值观明确</h3>
+                        <p class="timeline-text">《AI权利法案蓝图》发布，确立安全、公平、隐私、透明等核心原则，强化以人为中心的AI治理。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023</div>
+                        <h3 class="timeline-title">全面行政监管</h3>
+                        <p class="timeline-text">《安全、可靠、可信的AI》行政令出台，美国最全面的AI监管框架，涵盖安全测试、内容溯源、人才战略等。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2024</div>
+                        <h3 class="timeline-title">安全与治理强化</h3>
+                        <p class="timeline-text">成立AI安全研究所，发布联邦机构AI治理要求，推动安全评估标准化和政府内部AI治理制度化。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025</div>
+                        <h3 class="timeline-title">问责与国际协调</h3>
+                        <p class="timeline-text">《AI问责法案》实施条例生效，建立追责机制；推动跨境数据流动协议，加强AI国家安全与全球治理协调。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="copyright">Copyright © 2026 中美俄AI法规观察 版权所有</div>
+        <div class="footer-links">
+            <a href="index.html">返回首页</a> | 
+            <a href="china.html" target="_blank">中国概况</a> | 
+            <a href="russia.html" target="_blank">俄罗斯概况</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. 筛选功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const policyCards = document.querySelectorAll('.policy-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 按钮状态切换
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // 筛选逻辑
+                    const year = btn.getAttribute('data-year');
+                    policyCards.forEach(card => {
+                        if (year === 'all' || card.getAttribute('data-year') === year) {
+                            card.style.display = 'flex';
+                            // 添加淡入动画
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.opacity = '1', 50);
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // 2. 移动端菜单
+            const hamburger = document.getElementById('hamburgerBtn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const closeBtn = document.getElementById('sidebarClose');
+            const sidebarLinks = sidebar.querySelectorAll('a');
+
+            function toggleMenu() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            hamburger.addEventListener('click', toggleMenu);
+            closeBtn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+            
+            // 点击链接后自动关闭菜单
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+
+            // 3. 滚动显现动画 (Scroll Reveal)
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 4. 导航栏滚动变色
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+
+            // 5. 音频控制
+            const audioBtn = document.getElementById('audioBtn');
+            const bgAudio = document.getElementById('bgAudio');
+            if (audioBtn && bgAudio) {
+                audioBtn.parentElement.addEventListener('click', () => {
+                    if (bgAudio.paused) {
+                        bgAudio.play();
+                        audioBtn.className = 'fa-solid fa-volume-high';
+                        audioBtn.style.color = window.scrollY > 50 ? 'var(--primary-color)' : 'white';
+                    } else {
+                        bgAudio.pause();
+                        audioBtn.className = 'fa-solid fa-volume-xmark';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

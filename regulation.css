@@ -1,0 +1,1051 @@
+/* ===================== 全局样式重置 ===================== */
+/* 作用：清除默认边距/内边距，统一盒模型（border-box：宽高包含边框/内边距），避免浏览器差异 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 全局基础样式：统一字体、背景色、文字色、行高，提升整体可读性 */
+body {
+    font-family: "Microsoft YaHei", "SimHei", sans-serif; /* 优先微软雅黑，兼容黑体 */
+    background-color: #f0f8ff; /* 超浅蓝底：柔和不刺眼，符合科技主题 */
+    color: #424242; /* 深灰文字：比纯黑更易读，降低视觉疲劳 */
+    line-height: 1.6; /* 行高：提升文字可读性 */
+}
+
+/* ===================== 汉堡菜单 + 侧边栏样式（仅移动端） ===================== */
+/* 汉堡按钮：默认隐藏，移动端显示，z-index确保在最上层 */
+.hamburger {
+    display: none; /* 桌面端隐藏 */
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    z-index: 1100;
+    /* 滚动动画：页面滚动超过100vh（视频区高度）时，文字色从白变深蓝 */
+    animation: navColorChange 0.3s linear forwards;
+    animation-timeline: scroll(root block);
+    animation-range: 100vh 101vh;
+}
+
+/* 侧边栏容器：固定右侧，默认隐藏（translateX(100%)），z-index高于遮罩层 */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%; /* 手机端宽度80%，避免过宽 */
+    height: 100vh; /* 占满视口高度 */
+    background-color: white; /* 白色背景，突出文字 */
+    z-index: 1200;
+    transform: translateX(100%); /* 初始隐藏在右侧 */
+    transition: transform 0.3s ease; /* 0.3秒平滑滑入/滑出 */
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1); /* 左侧阴影，增强层次感 */
+    padding-top: 60px; /* 顶部内边距，避开关闭按钮 */
+}
+
+/* 侧边栏激活：translateX(0)，显示侧边栏 */
+.sidebar-active {
+    transform: translateX(0);
+}
+
+/* 侧边栏关闭按钮：定位右上角，蓝色图标，鼠标指针为手型 */
+.sidebar-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #1976d2; /* 深蓝主色 */
+    cursor: pointer;
+}
+
+/* 侧边栏导航链接：纵向排列，底部边框分隔，增强可读性 */
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+.sidebar-links a {
+    color: #1976d2; /* 深蓝主色 */
+    text-decoration: none;
+    font-size: 18px;
+    padding: 15px 0; /* 上下内边距，增大点击区域 */
+    border-bottom: 1px solid #dbeafe; /* 浅蓝分隔线 */
+    transition: color 0.3s; /* 颜色过渡，hover更顺滑 */
+}
+
+/* 侧边栏链接hover/active：浅蓝，突出当前项 */
+.sidebar-links a:hover, .sidebar-links a.active {
+    color: #3399ff;
+}
+
+/* 侧边栏遮罩层：默认隐藏，显示时覆盖整个页面，半透明黑色 */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* 半透明黑，突出侧边栏 */
+    z-index: 1150; /* 低于侧边栏，高于其他内容 */
+    display: none; /* 初始隐藏 */
+}
+
+/* 遮罩层激活：显示遮罩层 */
+.overlay-active {
+    display: block;
+}
+
+/* ===================== 导航栏样式 ===================== */
+/* 核心设计：固定顶部，初始透明背景，滚动后变为白色背景，增强层次感 */
+.navbar {
+    background-color: transparent; /* 初始透明，叠加视频背景 */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 15px 0; /* 上下内边距，避免内容贴边 */
+    position: fixed; /* 固定顶部 */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* 确保在最上层 */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 轻微阴影，区分内容区 */
+    /* 滚动动画：背景色从透明变白色，阴影加深 */
+    animation: navBgChange 0.3s linear forwards;
+    animation-timeline: scroll(root block); /* 基于页面滚动触发 */
+    animation-range: 100vh 101vh; /* 滚动超过视频区（100vh）时触发 */
+    transition: background-color 0.3s, box-shadow 0.3s; /* 过渡更顺滑 */
+}
+
+/* 导航栏容器：统一宽度（1400px），居中，flex布局对齐元素 */
+.navbar-container {
+    width: 100%;
+    max-width: 1400px; /* 统一宽度：与内容区一致，避免错位 */
+    margin: 0 auto; /* 水平居中 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 两端对齐：音频/汉堡在左，Logo/链接在右 */
+    gap: 20px; /* 元素间距，避免拥挤 */
+    padding-left: 30px;
+    padding-right: 20px;
+}
+
+/* 音频控制容器：鼠标指针为手型，图标大小适配 */
+.audio-control {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* 音频图标样式：初始白色，滚动后变深蓝，与导航文字同步 */
+.audio-control i {
+    color: white;
+    animation: navColorChange 0.3s linear forwards;
+    animation-timeline: scroll(root block);
+    animation-range: 100vh 101vh;
+    transition: color 0.3s;
+}
+
+/* 音频图标hover：保持白色，增强交互反馈 */
+.audio-control i:hover {
+    color: #ffffff;
+}
+
+/* 暂停状态图标：复用相同的滚动动画，确保样式统一 */
+.audio-control i.fa-bell-slash {
+    animation: navColorChange 0.3s linear forwards;
+    animation-timeline: scroll(root block);
+    animation-range: 100vh 101vh;
+}
+
+/* Logo + 导航链接组合：flex布局，占满剩余宽度 */
+.nav-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+}
+
+/* Logo图片：高度固定，垂直对齐，避免错位 */
+.logo img {
+    height: 40px;
+    vertical-align: middle;
+}
+
+/* 桌面端导航链接：flex横向排列，间距20px */
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+/* 导航链接样式：初始白色，滚动后变深蓝，hover保持白色 */
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500; /* 中等加粗，增强可读性 */
+    transition: color 0.3s;
+    animation: navColorChange 0.3s linear forwards;
+    animation-timeline: scroll(root block);
+    animation-range: 100vh 101vh;
+}
+
+/* 导航文字颜色动画：从白到深蓝 */
+@keyframes navColorChange {
+    from { color: white; }
+    to { color: #1976d2; /* 深蓝主色 */ }
+}
+
+/* 导航背景色动画：从透明到白色，阴影加深 */
+@keyframes navBgChange {
+    from {
+        background-color: transparent;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    to {
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+}
+
+/* 导航链接hover/active：保持白色，突出当前项 */
+.nav-links a:hover, .nav-links a.active {
+    color: #ffffff;
+}
+
+/* ===================== 文字滑入动画（视频区标题） ===================== */
+/* 功能：标题从左侧滑入，伴随透明度变化，增强视觉效果 */
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%); /* 初始位置：左侧100%（出屏幕） */
+    opacity: 0; /* 初始透明 */
+  }
+  100% {
+    transform: translateX(0); /* 最终位置：正常位置 */
+    opacity: 1; /* 最终不透明 */
+  }
+}
+
+/* ===================== 视频主视觉区 ===================== */
+/* 核心设计：全屏视频背景，叠加半透明层 + 多语言标题，增强层次感 */
+.video-hero {
+    position: relative; /* 为叠加层提供定位参考 */
+    height: 100vh; /* 占满视口高度 */
+    overflow: hidden; /* 隐藏视频超出部分 */
+    margin-top: 0px; /* 与导航栏无缝衔接 */
+}
+
+/* 视频元素：宽高100%，object-fit: cover 保持比例，铺满容器 */
+.hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 视频叠加层：半透明黑，居中文字，增强文字可读性 */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3); /* 半透明黑，不遮挡视频 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px; /* 内边距，避免文字贴边 */
+}
+
+/* 中文字体：思源宋体 + 微软雅黑，大号字体，文字阴影增强可读性 */
+.cn-text {
+    font-family: "Source Han Serif", "Microsoft YaHei", serif;
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* 文字阴影，突出显示 */
+    animation: slideInFromLeft 1s ease forwards 0s; /* 0秒延迟，1秒滑入 */
+    opacity: 0; /* 初始透明，动画触发后显示 */
+}
+
+/* 英文字体：Kirang Haerang，36px，0.3秒延迟滑入 */
+.en-text {
+    font-family: 'Kirang Haerang', cursive;
+    font-size: 36px;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    animation: slideInFromLeft 1s ease forwards 0.3s;
+    opacity: 0;
+}
+
+/* 俄文字体：PT Sans + Roboto，32px，0.6秒延迟滑入 */
+.ru-text {
+    font-family: 'PT Sans', 'Roboto', sans-serif;
+    font-size: 32px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    animation: slideInFromLeft 1s ease forwards 0.6s;
+    opacity: 0;
+}
+
+/* ===================== 统一section基础样式 ===================== */
+/* 作用：为统计区/最新法规区/官网区提供统一的基础样式，保证视觉一致性 */
+.stats-section, .latest-policy-section, .source-section {
+    width: 90%; /* 占屏幕90%，避免过宽 */
+    max-width: 1400px; /* 最大宽度1400px，适配大屏 */
+    margin: 100px auto; /* 上下100px间距，水平居中 */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* 内部元素间距30px，避免拥挤 */
+}
+
+/* 统一标题样式：深蓝主色，居中，底部下划线，增强视觉焦点 */
+.stats-section h2, .latest-policy-section .slider-title, .source-section .slider-title {
+    color: #1976d2; /* 深蓝主色 */
+    font-size: 28px;
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative; /* 为下划线提供定位参考 */
+}
+
+/* 标题下划线：80px宽，3px高，浅蓝，居中，增强标题层次感 */
+.stats-section h2::after, .latest-policy-section .slider-title::after, .source-section .slider-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #3399ff; /* 浅蓝强调色 */
+    margin: 10px auto 0;
+}
+
+/* ===================== 政策轮播样式 ===================== */
+/* 轮播容器：相对定位，固定高度，圆角，阴影，增强视觉效果 */
+.policy-carousel-container {
+    width: 100%;
+    max-width: 1400px; /* 与上层容器对齐，避免错位 */
+    margin: 0 auto 30px;
+    position: relative;
+    height: 500px; /* 桌面端高度500px，响应式调整 */
+    overflow: hidden; /* 隐藏超出轮播项 */
+    border-radius: 10px; /* 圆角，柔和视觉 */
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08); /* 轻微阴影，增强层次感 */
+}
+
+/* 轮播箭头：绝对定位，圆形，半透明白色，hover变深蓝，增强交互 */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直居中 */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 圆形按钮 */
+    background-color: rgba(255, 255, 255, 0.8); /* 半透明白色 */
+    border: none; /* 去掉默认边框 */
+    color: #1976d2; /* 深蓝图标 */
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10; /* 高于轮播项，确保可点击 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease; /* 所有属性过渡，hover更顺滑 */
+}
+
+/* 箭头hover：背景变深蓝，文字变白，阴影增强 */
+.carousel-arrow:hover {
+    background-color: #1976d2;
+    color: white;
+    box-shadow: 0 0 10px rgba(25, 118, 210, 0.5); /* 发光效果，突出交互 */
+}
+
+/* 左箭头：定位左侧20px */
+.carousel-arrow-left {
+    left: 20px;
+}
+
+/* 右箭头：定位右侧20px */
+.carousel-arrow-right {
+    right: 20px;
+}
+
+/* 轮播轨道容器：宽高100%，相对定位 */
+.carousel-track-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 轮播轨道：flex布局，居中对齐，相对定位 */
+.carousel-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 轮播项：绝对定位，默认70%宽/80%高，半透明，低层级 */
+.carousel-item {
+    position: absolute;
+    width: 70%; /* 非激活项宽度 */
+    height: 80%; /* 非激活项高度 */
+    border-radius: 8px;
+    overflow: hidden; /* 隐藏图片超出部分 */
+    transition: all 0.5s ease; /* 0.5秒平滑过渡 */
+    opacity: 0.7; /* 半透明，突出激活项 */
+    z-index: 1; /* 低层级，激活项更高 */
+}
+
+/* 激活项：85%宽/100%高，不透明，最高层级 */
+.carousel-item.active {
+    width: 85%;
+    height: 100%;
+    opacity: 1;
+    z-index: 5;
+    transform: translateX(0); /* 居中显示 */
+}
+
+/* 上一项：左侧70%，次低层级 */
+.carousel-item.prev {
+    transform: translateX(-70%);
+    z-index: 2;
+}
+
+/* 下一项：右侧70%，次低层级 */
+.carousel-item.next {
+    transform: translateX(70%);
+    z-index: 2;
+}
+
+/* 轮播图片：宽高100%，object-fit: cover 保持比例 */
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 轮播文字层：渐变背景，底部30%高度，增强文字可读性 */
+.carousel-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%; /* 文字区域占底部30% */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)); /* 渐变黑，上浅下深 */
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 轮播标题：20px，底部8px间距 */
+.carousel-text h4 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+/* 轮播简介：14px，行高1.5，轻微透明 */
+.carousel-text p {
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* ===================== 统计表格横向滚动 ===================== */
+/* 作用：移动端表格横向滚动，避免列挤压，提升可读性 */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* 横向滚动 */
+    -webkit-overflow-scrolling: touch; /* 优化移动端滚动体验（弹性滚动） */
+}
+
+/* 表格容器：白色背景，圆角，阴影，内边距，增强视觉效果 */
+.stats-table {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    padding: 30px;
+}
+
+/* 表格：宽度100%，边框合并，居中对齐 */
+.stats-table table {
+    width: 100%;
+    border-collapse: collapse; /* 合并边框，避免双边框 */
+    text-align: center;
+}
+
+/* 表格单元格：内边距15px，浅蓝边框，增强分隔 */
+.stats-table th, .stats-table td {
+    padding: 15px;
+    border: 1px solid #dbeafe; /* 浅蓝边框 */
+}
+
+/* 表格表头：深蓝背景，白色文字，中等加粗 */
+.stats-table th {
+    background-color: #1976d2;
+    color: white;
+    font-weight: 500;
+}
+
+/* 表格偶数行：超浅蓝背景，增强可读性 */
+.stats-table tr:nth-child(even) {
+    background-color: #f0f8ff;
+}
+
+/* 表格备注：灰色，斜体，左对齐，顶部15px间距 */
+.table-note {
+    color: #9e9e9e;
+    font-size: 14px;
+    text-align: start;
+    margin-top: 15px;
+    font-style: italic; /* 斜体，突出备注属性 */
+}
+
+/* ===================== 政策内容布局 ===================== */
+/* 政策主容器：flex布局，拉伸对齐，确保左右等高 */
+.policy-main-container {
+    display: flex;
+    gap: 30px;
+    align-items: stretch; /* 关键：左右容器高度一致 */
+}
+
+/* Grid布局：左1fr，右0.7fr，拉伸对齐，响应式调整 */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 0.7fr; /* 左侧占比更大，突出文字 */
+    gap: 30px;
+    align-items: stretch;
+}
+
+/* 左侧文字容器：白色背景，圆角，阴影，内边距 */
+.policy-left-content {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    padding: 20px;
+}
+
+/* 政策卡片：底部25px间距，边框分隔，最后一个卡片去掉边框 */
+.policy-card {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dbeafe;
+}
+
+/* 最后一个卡片：去掉底部间距和边框 */
+.policy-card:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* 政策卡片标题：深蓝，底部10px间距 */
+.policy-card h3 {
+    color: #1976d2;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+/* 政策卡片内容：深灰，行高1.8，增强可读性 */
+.policy-card p {
+    color: #424242;
+    line-height: 1.8;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+/* 右侧图片窗口：相对定位，溢出隐藏，浅蓝边框，增强视觉效果 */
+.policy-right-image-window {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    overflow: hidden; /* 隐藏图片超出部分 */
+    position: relative;
+    border: 2px solid #dbeafe;
+}
+
+/* 政策滚动图片：绝对定位，宽度100%，高度自适应，最小高度保证滚动效果 */
+#policy-follow-scroll-img {
+    width: 100%;
+    height: auto; /* 取消固定高度，避免变形 */
+    min-height: 1000px; /* 最小高度，保证滚动效果 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: top 0.2s ease; /* 0.2秒平滑滚动 */
+    object-fit: cover;
+}
+
+/* ===================== 法规链接样式 ===================== */
+/* 链接基础样式：深蓝，无下划线，hover变浅蓝，active变红色，点击后变灰色 */
+.policy-link {
+    color: #1976d2;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+/* 链接hover：浅蓝，增强交互反馈 */
+.policy-link:hover {
+    color: #90caf9;
+}
+
+/* 链接active：红色，突出点击状态 */
+.policy-link:active {
+    color: #ff0000;
+}
+
+/* 链接点击后：灰色，仅当前会话有效 */
+.policy-link.active-clicked {
+    color: #9e9e9e;
+}
+
+/* ===================== 网站简介 ===================== */
+/* 核心设计：深蓝背景，白色文字，圆角，阴影，增强视觉焦点 */
+.intro-section {
+    background-color: #1976d2; /* 深蓝主色 */
+    padding: 60px 20px;
+    margin: 100px auto;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    width: 90%;
+    max-width: 1400px;
+    border-radius: 10px;
+}
+
+/* 简介容器：宽度100%，居中，两端对齐，增强文字可读性 */
+.intro-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: justify; /* 文字两端对齐，提升排版美观度 */
+    padding: 0 10px;
+}
+
+/* 简介标题：白色，居中，底部下划线 */
+.intro-container h2 {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 30px;
+    position: relative;
+    text-align: center;
+}
+
+/* 简介标题下划线：30px宽，浅蓝，居中 */
+.intro-container h2::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: #3399ff;
+    margin: 10px auto 0;
+}
+
+/* 简介内容：白色，行高1.8，增强可读性 */
+.intro-container p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: white;
+    line-height: 1.8;
+}
+
+/* ===================== 底部版权 ===================== */
+/* 核心设计：深蓝背景，白色文字，居中，轻微阴影，区分内容区 */
+.footer-section {
+    background-color: #1976d2; /* 与导航栏一致 */
+    color: white;
+    padding: 20px 0;
+    margin-top: 80px;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1); /* 顶部阴影，增强层次感 */
+    font-size: 14px;
+}
+
+/* 版权容器：宽度90%，居中，文字居中对齐 */
+.footer-container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ===================== 法规发布官网样式 ===================== */
+/* 图片窗口：固定高度，溢出隐藏，相对定位，浅蓝背景，圆角，边框 */
+.source-image-window {
+    width: 100%;
+    height: 400px; /* 桌面端高度400px */
+    margin: 0 auto 40px;
+    overflow: hidden;
+    position: relative;
+    background-color: #f0f8ff;
+    border-radius: 10px;
+    border: 2px solid #dbeafe;
+}
+
+/* 官网滚动图片：绝对定位，垂直居中，最小宽度保证横向滚动，object-fit: contain 完整显示 */
+#source-scroll-img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直居中，避免裁剪 */
+    object-fit: contain; /* 完整显示图片，不裁剪 */
+    transition: left 0.3s ease-out; /* 平滑横向滚动 */
+    min-width: 1600px; /* 最小宽度，保证横向滚动效果 */
+}
+
+/* 大蓝框容器：浅蓝边框，浅蓝背景，圆角，内边距，增强视觉效果 */
+.source-big-blue-box {
+    border: 3px solid #BBDEFB; /* 浅蓝边框 */
+    border-radius: 12px;
+    padding: 25px;
+    background-color: #F5F9FF; /* 超浅蓝背景 */
+    margin: 0 auto;
+    max-width: 1800px; /* 最大宽度，适配大屏 */
+    width: 100%;
+}
+
+/* 单个国家项：flex布局，居中对齐，底部边框分隔 */
+.source-country-item {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 图片与文字间距 */
+    padding: 20px 0;
+    border-bottom: 1px solid #BBDEFB;
+}
+
+/* 最后一个国家项：去掉底部边框 */
+.source-country-item:last-child {
+    border-bottom: none;
+}
+
+/* 国家图片容器：固定宽高，溢出隐藏，圆角，不收缩 */
+.source-country-img {
+    width: 200px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 8px;
+    flex-shrink: 0; /* 避免图片被压缩 */
+}
+
+/* 国家图片：宽高100%，object-fit: cover 保持比例 */
+.source-country-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 国家文字容器：占满剩余宽度 */
+.source-country-text {
+    flex: 1;
+}
+
+/* 国家标题：深蓝，flex布局，标题左对齐，链接右对齐，自动换行 */
+.source-country-text h3 {
+    color: #0D47A1; /* 深蓝 */
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap; /* 移动端自动换行 */
+}
+
+/* 访问官网链接：浅蓝边框，圆角，hover变深蓝，增强交互 */
+.source-link {
+    display: inline-block;
+    padding: 4px 12px;
+    color: #1E88E5;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #1E88E5;
+    border-radius: 6px;
+    transition: color 0.3s, border-color 0.3s;
+    flex-shrink: 0; /* 避免链接被压缩 */
+}
+
+/* 链接hover：文字/边框变深蓝 */
+.source-link:hover {
+    color: #0D47A1;
+    border-color: #0D47A1;
+}
+
+/* ===================== 响应式适配 - 手机端（≤767px） ===================== */
+/* 核心调整：缩小字体/间距/高度，单列布局，显示汉堡菜单，隐藏桌面导航 */
+@media (max-width: 767px) {
+    /* 全局基础：缩小字体/行高，适配小屏 */
+    body {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    /* 导航栏：缩小内边距，调整布局 */
+    .navbar {
+        padding: 8px 0;
+    }
+
+    .navbar-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* 隐藏Logo+桌面导航，仅显示汉堡+音频 */
+    .nav-main {
+        display: none;
+    }
+
+    .logo img {
+        height: 35px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    .audio-control {
+        font-size: 22px;
+        margin-right: 10px;
+    }
+
+    /* 视频区：缩小高度，文字大小 */
+    .video-hero {
+        height: 80vh;
+    }
+
+    .cn-text {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .en-text {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .ru-text {
+        font-size: 20px;
+    }
+
+    .video-overlay {
+        padding: 15px;
+    }
+
+    /* 表格：缩小内边距/字体，适配小屏 */
+    .stats-table {
+        padding: 10px;
+    }
+
+    .stats-table th, .stats-table td {
+        padding: 8px 5px;
+        font-size: 12px;
+    }
+
+    .table-note {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    /* 轮播：缩小高度，调整轮播项位置/大小 */
+    .policy-carousel-container {
+        height: 220px;
+        margin: 0 auto 20px;
+    }
+
+    .carousel-item {
+        width: 80%;
+        height: 80%;
+    }
+
+    .carousel-item.active {
+        width: 95%;
+        height: 100%;
+    }
+
+    .carousel-item.prev {
+        transform: translateX(-60%);
+    }
+
+    .carousel-item.next {
+        transform: translateX(60%);
+    }
+
+    .carousel-text {
+        height: 35%; /* 增大文字区域，提升可读性 */
+        padding: 15px 20px;
+    }
+
+    .carousel-text h4 {
+        font-size: 16px;
+    }
+
+    .carousel-text p {
+        font-size: 12px;
+    }
+
+    .carousel-arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    .carousel-arrow-left {
+        left: 10px;
+    }
+
+    .carousel-arrow-right {
+        right: 10px;
+    }
+    
+    /* 政策布局：单列，缩小间距 */
+    .grid-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .policy-right-image-window {
+        height: 250px; /* 缩小图片窗口高度 */
+    }
+
+    .policy-card h3 {
+        font-size: 16px;
+    }
+
+    .policy-card p {
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 5px;
+    }
+
+    /* 官网区：缩小图片窗口高度，调整图片最小宽度 */
+    .source-image-window {
+        height: 200px;
+    }
+
+    #source-scroll-img {
+        min-width: 1200px;
+    }
+
+    .source-big-blue-box {
+        padding: 15px;
+    }
+
+    /* 官网卡片：单列（上图下文），调整间距/大小 */
+    .source-country-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px 0;
+    }
+
+    .source-country-img {
+        width: 100%;
+        height: 180px;
+    }
+
+    .source-country-text h3 {
+        font-size: 17px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .source-link {
+        padding: 3px 10px;
+        font-size: 13px;
+    }
+
+    .source-country-text p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* 简介区：缩小宽度/内边距/字体 */
+    .intro-section {
+        width: 95%;
+        padding: 30px 15px;
+        margin: 30px auto;
+    }
+
+    .intro-container h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .intro-container p {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    /* 版权区：缩小内边距/字体 */
+    .footer-section {
+        padding: 15px 0
+
+            
+   /* 无障碍核心样式：符合WCAG 2.1 AA标准 */
+/* 1. 键盘焦点高亮：确保Tab键导航可见 */
+:focus-visible {
+    outline: 3px solid #1976d2;
+    outline-offset: 2px;
+    z-index: 9999;
+}
+
+/* 2. 屏幕阅读器专用类：视觉隐藏但可被读取 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* 3. 焦点可见类：适配跳过导航链接 */
+.sr-only.focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    background: #1976d2;
+    color: white;
+    text-decoration: none;
+    z-index: 99999;
+}
+
+/* 4. 高对比度模式适配：系统高对比度下的样式 */
+@media (prefers-contrast: more) {
+    .carousel-arrow, .hamburger, .sidebar-close {
+        border: 2px solid black;
+    }
+    .policy-card {
+        border-bottom: 2px solid #1976d2;
+    }
+}
+
+/* 5. 减少动画：适配系统「减少动画」设置 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001s !important;
+        transition-duration: 0.001s !important;
+    }
+    .fa-beat {
+        animation: none !important;
+    }
+}         
+            
+            
